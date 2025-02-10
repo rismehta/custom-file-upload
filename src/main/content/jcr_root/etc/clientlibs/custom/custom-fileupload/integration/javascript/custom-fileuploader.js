@@ -6,7 +6,6 @@
  *
  *  iframeName: Name of the Iframe
  *  iframeContainer: Container of the iframe(eg Body)
- *  fileUploadPath: Path where the file is to be uploaded
  *  fileUploadServlet: Servlet where the file is to be uploaded
  *
  */
@@ -39,29 +38,22 @@
                 s3UploadUrl = null, // URL for getting S3 presigned URL
                 uuid;
 
-            if (!fileObject.fileUploadPath) {
-                uuid = fileObject._uuidGenerator();
-            }
-
             // if uuid exists only then upload the file in the current instance
-            if (_.isObject(fileObject) && (fileObject.fileUploadPath || uuid)) {
+            if (_.isObject(fileObject)) {
                 var fileDom = fileObject.fileDom,
                     $form = $(this.options.iframeContainer).find(".filePreview");
                 fileName = fileObject.fileName;
                 multiple = fileObject.multiple;
                 
-                if (!fileObject.fileUploadPath) {
-                    fileObject.fileUploadPath = this.options.fileUploadPath + "/" + uuid;
-                }
 
                 if (fileDom !== null) {
                     // Set the S3 upload endpoint
                     s3UploadUrl = fileObject._getUrl + "/services/s3/presign";
                     
                     if (!multiple) {
-                        this.fileUrl = fileObject.fileUploadPath + "/" + fileName;
+                        this.fileUrl = s3UploadUrl + "/" + fileName;
                     } else {
-                        this.fileUrl = fileObject.fileUploadPath;
+                        this.fileUrl = s3UploadUrl;
                     }
 
                     var self = this;
