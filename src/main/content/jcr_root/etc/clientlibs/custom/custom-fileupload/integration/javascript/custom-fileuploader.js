@@ -164,28 +164,9 @@
             return this.fileUrl;
         },
 
-        getUrlContentsFromUploadData: function (data) {
-            var temp;
-            if(data != null) {
-                temp = $(data).find("#ChangeLog").text().split("br", 2)[1];
-            } else {
-                var selector = this.options.iframeContainer + " iframe[name='" + this.options.iframeName + "']";
-                temp = $(selector).contents().find("#ChangeLog").text().split("br", 2)[1];
-            }
-            
-            temp = temp.substring(temp.indexOf("created") + 9, temp.indexOf(";<"));
-            temp = temp.substring(0, temp.length - 2);
-            var index = temp.indexOf("/jcr:content");
-            if (index !== -1)
-                temp = temp.substring(0, index);
-            return temp;
-        },
-
-        handleSingleFileUpload: function (data) {
-            var url = this.getUrlContentsFromUploadData(data);
-
-            //prepend context path
-            url = this.options._getUrl + url;
+        handleSingleFileUpload: function (result) {
+            // todo: get the url from result and trigger the file uploaded event
+            var url = result;
             if (url in this.fileMap) {
                 this.fileMap[url].trigger("customFileUploader.fileUploaded");
             }
