@@ -912,7 +912,7 @@
             // Getting input file value
             // listening on fileuploaded event
             this.$element.change($.proxy(this.handleChange, this))
-                .on("customFileUploader.fileUploaded", $.proxy(this.previewFile, this));
+                .on("adobeFileUploader.fileUploaded", $.proxy(this.previewFile, this));
         }
     };
 

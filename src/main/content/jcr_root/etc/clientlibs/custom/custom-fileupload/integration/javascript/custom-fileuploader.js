@@ -88,7 +88,7 @@
                             })
                             .catch(function(error) {
                                 console.error("Error uploading files:", error);
-                                self.$element.trigger("customFileUploader.fileUploadFailed");
+                                self.$element.trigger("adobeFileUploader.fileUploadFailed");
                             });
 
                     } else {
@@ -102,7 +102,7 @@
                             })
                             .catch(function(error) {
                                 console.error("Error uploading file:", error);
-                                self.$element.trigger("customFileUploader.fileUploadFailed");
+                                self.$element.trigger("adobeFileUploader.fileUploadFailed");
                             });
                     }
                 }
@@ -166,7 +166,7 @@
         },
 
         handleMultipleFileUpload: function (data) {
-            this.$element.trigger("customFileUploader.multipleFileUploaded");
+            this.$element.trigger("adobeFileUploader.multipleFileUploaded");
         },
 
         getFileUrl: function () {
@@ -177,7 +177,7 @@
             // Check if result is an object with url property
             var url = (result && result.url) ? result.url : result;
             if (url && url in this.fileMap) {
-                this.fileMap[url].trigger("customFileUploader.fileUploaded");
+                this.fileMap[url].trigger("adobeFileUploader.fileUploaded");
             }
         },
 
