@@ -11,3 +11,9 @@ To use this custom file upload widget in AF v1, do the following steps:
 To modify the custom storage logic for each file upload, please refer to the code here: [custom-fileuploader.js.](https://github.com/rismehta/custom-file-upload/blob/main/src/main/content/jcr_root/etc/clientlibs/custom/custom-fileupload/integration/javascript/custom-fileuploader.js#L36-L157)
 
 When the remove icon is clicked on a file, the following function is called: [custom-fileattachment.js](https://github.com/rismehta/custom-file-upload/blob/main/src/main/content/jcr_root/etc/clientlibs/custom/custom-fileupload/integration/javascript/custom-fileattachment.js#L485). Please implement the logic to remove the file upload from the custom storage accordingly.
+
+
+The custom uploader also needs to be registered via GuideBridge, so that it could be consumed during form save as well,
+```
+guideBridge.registerConfig(“uploaderPluginName” : “customFileUploader”);
+```
