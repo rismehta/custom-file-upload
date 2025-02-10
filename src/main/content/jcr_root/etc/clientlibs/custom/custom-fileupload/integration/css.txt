@@ -1,0 +1,3 @@
+#base=css
+
+custom-fileupload-widget.css

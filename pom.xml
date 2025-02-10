@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- ====================================================================== -->
+    <!-- P A R E N T P R O J E C T D E S C R I P T I O N                        -->
+    <!-- ====================================================================== -->
+    <groupId>custom</groupId>
+    <artifactId>custom</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>content-package</packaging>
+    <name>custom-fileupload</name>
+    <description>custom-fileupload</description>
+
+    <!-- ====================================================================== -->
+    <!-- Inclusion of repositories in POMs is controversial, to say the least.  -->
+    <!-- It would be best if you proxied the Adobe repository using a Maven     -->
+    <!-- Repository Manager. Once you do that, remove these sections.           -->
+    <!-- ====================================================================== -->
+    <repositories>
+        <repository>
+            <id>central</id>
+            <name>Maven Central</name>
+            <url>https://repo1.maven.org/maven2/</url>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>central</id>
+            <name>Maven Central</name>
+            <url>https://repo1.maven.org/maven2/</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/content/jcr_root</directory>
+                <excludes>
+                    <exclude>vault/**</exclude>
+                    <exclude>**/.vlt</exclude>
+                    <exclude>**/.vltignore</exclude>
+                </excludes>
+            </resource>
+        </resources>
+        <plugins>
+            <!-- ====================================================================== -->
+            <!-- V A U L T   P A C K A G E   P L U G I N                                -->
+            <!-- ====================================================================== -->
+            <plugin>
+                <groupId>com.day.jcr.vault</groupId>
+                <artifactId>content-package-maven-plugin</artifactId>
+                <version>0.0.24</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <group>custom-fileupload</group>
+                    <filterSource>src/main/content/META-INF/vault/filter.xml</filterSource>
+                    <properties>
+                        <description>custom-fileupload</description>
+                        <createdBy>Adobe Systems Incorporated</createdBy>
+                        <acHandling>merge_preserve</acHandling>
+                    </properties>
+                    <packageType>content</packageType>
+                    <failOnError>true</failOnError>
+                    <workDirectory>${project.build.directory}/vault-work</workDirectory>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+

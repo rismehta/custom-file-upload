@@ -1,0 +1,4 @@
+#base=javascript
+custom-fileattachment.js
+custom-fileuploader.js
+custom-fileupload-widget.js
