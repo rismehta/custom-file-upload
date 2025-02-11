@@ -728,7 +728,7 @@
                         // if the file is not invalid, show it and push it to internal array
                         if (!isCurrentInvalidFileSize && !isCurrentInvalidFileName && !isCurrentInvalidMimeType) {
                             this.showFileList(currFileName);
-                            this.values.push(currFileName);
+                            // We'll update this.values with the complete URL later
                             validFileNames.push(currFileName);
                         } else {
                             invalidFilesIndexes.push(fileIndex);
@@ -742,7 +742,6 @@
                             fileDom: $elem,
                             fileName: this.options.multiSelect ? validFileNames : validFileNames[0],
                             multiple: this.options.multiSelect,
-                            fileUploadPath: "/a/b/c", // todo: just a temporary path, remove once proper integration is done
                             _uuidGenerator: this.options._uuidGenerator,
                             _getUrl: this.options._getUrl
                         };
@@ -750,16 +749,32 @@
                         // Upload file and get URL
                         var fileUrl = this.$element[this.options.uploaderPluginName]("uploadFile", fileObject);
                         
-                        // Set the file URL in data-key for each valid file
-                        // store the file url in the data-key for each valid file
+                        // Update this.values and set data-key for each valid file
                         if (this.options.multiSelect) {
                             _.each(validFileNames, function(fileName, index) {
                                 var $fileNameSpan = this.$elementFileList.find("span.guide-fu-fileName").eq(index);
-                                $fileNameSpan.data("key", fileUrl + "/" + fileName);
+                                var completeUrl = fileUrl + "/" + fileName;
+                                $fileNameSpan.data("key", completeUrl);
+                                
+                                // If this.values already exists, append to it, otherwise create new array
+                                if (_.isArray(this.values)) {
+                                    this.values.push(completeUrl);
+                                } else {
+                                    this.values = [completeUrl];
+                                }
                             }, this);
                         } else if (validFileNames.length === 1) {
                             var $fileNameSpan = this.$elementFileList.find("span.guide-fu-fileName").last();
                             $fileNameSpan.data("key", fileUrl);
+                            
+                            // For single select, replace or create this.values
+                            if (!this.options.multiSelect) {
+                                this.values = [fileUrl];
+                            } else if (_.isArray(this.values)) {
+                                this.values.push(fileUrl);
+                            } else {
+                                this.values = [fileUrl];
+                            }
                         }
                     }
 
@@ -911,8 +926,8 @@
             });
             // Getting input file value
             // listening on fileuploaded event
-            this.$element.change($.proxy(this.handleChange, this))
-                .on("adobeFileUploader.fileUploaded", $.proxy(this.previewFile, this));
+            this.$element.change($.proxy(this.handleChange, this));
+                //.on("adobeFileUploader.fileUploaded", $.proxy(this.previewFile, this));
         }
     };
 
