@@ -17,3 +17,5 @@ The custom uploader also needs to be registered via GuideBridge, so that it coul
 ```
 guideBridge.registerConfig(“uploaderPluginName” : “customFileUploader”);
 ```
+
+When uploading multiple files, draft feature assumes that the file uploaded URL will have fileName at the last.
