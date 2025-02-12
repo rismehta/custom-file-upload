@@ -35,26 +35,39 @@
         uploadFile: function (fileObject) {
             var multiple = false,
                 fileName = null,
-                s3UploadUrl = null, // URL for getting S3 presigned URL
-                uuid;
+                s3UploadUrl = null,
+                self = this;
 
-            // if uuid exists only then upload the file in the current instance
-            if (_.isObject(fileObject)) {
-                var fileDom = fileObject.fileDom,
-                    $form = $(this.options.iframeContainer).find(".filePreview");
-                fileName = fileObject.fileName;
-                multiple = fileObject.multiple;
-                
+            if (!_.isObject(fileObject)) {
+                return this.fileUrl;
+            }
 
-                if (fileDom !== null) {
-                    // Set the S3 upload endpoint
-                    s3UploadUrl = fileObject._getUrl + "/services/s3/presign";
-                    
-                    if (!multiple) {
-                        this.fileUrl = s3UploadUrl + "/" + fileName;
-                    } else {
-                        this.fileUrl = s3UploadUrl;
-                    }
+            var fileDom = fileObject.fileDom,
+                $form = $(this.options.iframeContainer).find(".filePreview");
+            fileName = fileObject.fileName;
+            multiple = fileObject.multiple;
+            
+            if (fileDom === null) {
+                return this.fileUrl;
+            }
+
+            // Set the S3 upload endpoint
+            s3UploadUrl = fileObject._getUrl + "/services/s3/presign";
+            
+            // Check if we already have cached URLs
+            var $fileInput = $(fileDom);
+            var cachedUrls = $fileInput.data('uploadedUrls');
+            
+            if (cachedUrls) {
+                this.fileUrl = multiple ? cachedUrls : cachedUrls[0];
+                return this.fileUrl;
+            }
+
+            if (!multiple) {
+                this.fileUrl = s3UploadUrl + "/" + fileName;
+            } else {
+                this.fileUrl = s3UploadUrl;
+            }
 
                     var self = this;
 
@@ -67,7 +80,12 @@
                                 var currentFileNames = fileName[index].split("\n");
                                 
                                 for (var fileIndex = 0; fileIndex < currentFileNames.length; fileIndex++) {
-                                    var currentFile = fileDomElement[0].files[fileIndex];
+                                    var currentFile = '';
+                                    if(fileDomElement[0]) {
+										currentFile = fileDomElement[0].files[fileIndex];
+                                    } else {
+										currentFile = fileDomElement.files[fileIndex];
+                                    }
                                     uploadPromises.push(self.uploadFileToS3(currentFile, s3UploadUrl, currentFileNames[fileIndex]));
                                 }
                             }

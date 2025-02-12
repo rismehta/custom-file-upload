@@ -251,8 +251,9 @@
                 // here filtered is a new array
                 // A new array is returned over here so that the user of this API doesn't try to change the widget array directly
                 filtered = $.map(this.$fileDomElements, function(item, index){
-                    if(!item) {
-                        return _self._getUrl(index);
+                    var url = _self._getUrl(index);
+                    if(!item && url) {
+                        return url;
                     } else if((item[0].files && item[0].files.length !== 0)
                             || (_self.options.multiSelect || item[0].value.length > 0)) {
                         return item;
@@ -747,7 +748,7 @@
                         };
                         
                         // Upload file and get URL
-                        var fileUrl = this.$element[this.options.uploaderPluginName]("uploadFile", fileObject);
+                        var fileUrl = this.$element[this.options.uploaderPluginName]("`uploadFile`", fileObject);
                         
                         // Update this.values and set data-key for each valid file
                         if (this.options.multiSelect) {
