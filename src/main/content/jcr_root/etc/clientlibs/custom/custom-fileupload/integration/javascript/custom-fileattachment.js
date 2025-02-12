@@ -748,7 +748,7 @@
                         };
                         
                         // Upload file and get URL
-                        var fileUrl = this.$element[this.options.uploaderPluginName]("`uploadFile`", fileObject);
+                        var fileUrl = this.$element[this.options.uploaderPluginName]("uploadFile", fileObject);
                         
                         // Update this.values and set data-key for each valid file
                         if (this.options.multiSelect) {
