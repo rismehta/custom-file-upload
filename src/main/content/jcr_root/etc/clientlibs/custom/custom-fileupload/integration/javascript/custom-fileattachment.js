@@ -252,7 +252,7 @@
                 // A new array is returned over here so that the user of this API doesn't try to change the widget array directly
                 filtered = $.map(this.$fileDomElements, function(item, index){
                     var url = _self._getUrl(index);
-                    if(!item && url) {
+                    if(!item || url) {
                         return url;
                     } else if((item[0].files && item[0].files.length !== 0)
                             || (_self.options.multiSelect || item[0].value.length > 0)) {
