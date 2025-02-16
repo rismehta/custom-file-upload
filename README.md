@@ -12,10 +12,13 @@ To modify the custom storage logic for each file upload, please refer to the cod
 
 When the remove icon is clicked on a file, the following function is called: [custom-fileattachment.js](https://github.com/rismehta/custom-file-upload/blob/main/src/main/content/jcr_root/etc/clientlibs/custom/custom-fileupload/integration/javascript/custom-fileattachment.js#L485). Please implement the logic to remove the file upload from the custom storage accordingly.
 
+Following feature toggle needs to be enabled to support custom uploader in form save:
+```
+FT_FORMS-18431
+```
 
 The custom uploader also needs to be registered via GuideBridge, so that it could be consumed during form save as well,
 ```
 guideBridge.registerConfig(“uploaderPluginName” : “customFileUploader”);
 ```
 
-When uploading multiple files, draft feature assumes that the file uploaded URL will have fileName at the last.
